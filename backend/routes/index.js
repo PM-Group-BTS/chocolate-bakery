@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const authRoutes = require('./auth.routes');
+const protectedRoutes = require('./protected.routes');
 
 // Welcome route
 router.get('/', (req, res) => {
@@ -18,5 +20,10 @@ router.get('/test', (req, res) => {
   });
 });
 
-module.exports = router;
+// Auth routes
+router.use('/auth', authRoutes);
 
+// Protected routes
+router.use('/protected', protectedRoutes);
+
+module.exports = router;
