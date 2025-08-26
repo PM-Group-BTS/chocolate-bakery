@@ -1,0 +1,47 @@
+/* Global styles for Chocolate Bakery application */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f9f5f0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+a {
+  text-decoration: none;
+  color: #5a3921;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+button {
+  cursor: pointer;
+  background-color: #5a3921;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  
+  &:hover {
+    background-color: #7a5941;
+  }
+  
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+}
