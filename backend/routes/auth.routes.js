@@ -8,7 +8,10 @@ const router = express.Router();
  * @access Public
  */
 router.post('/login', AuthController.login);
-
+router.get('/login', (req, res) => {
+    console.log('GET /login called');
+    res.send('Login endpoint. Please use POST method to login.');
+});
 /**
  * @route POST /api/auth/register
  * @desc Register a new user

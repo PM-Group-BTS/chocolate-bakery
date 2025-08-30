@@ -20,18 +20,18 @@ class AuthController {
    */
   static async login(req, res) {
     try {
-      const { email, password } = req.body;
+      const { username, password } = req.body;
 
       // Validate input
-      if (!email || !password) {
+      if (!username || !password) {
         return res.status(400).json({
           status: 'error',
-          message: 'Email and password are required'
+          message: 'Username and password are required'
         });
       }
 
-      // Find user by email
-      const user = await User.findByEmail(email);
+      // Find user by username
+      const user = await User.findByUsername(username);
       if (!user) {
         return res.status(401).json({
           status: 'error',
@@ -41,6 +41,7 @@ class AuthController {
 
       // Compare passwords
       const isPasswordValid = await bcrypt.compare(password, user.password);
+      //console.log(isPasswordValid);
       if (!isPasswordValid) {
         return res.status(401).json({
           status: 'error',
@@ -52,8 +53,7 @@ class AuthController {
       const token = jwt.sign(
         { 
           id: user.id, 
-          email: user.email,
-          role: user.role 
+          username: user.username
         },
         JWT_SECRET,
         { expiresIn: TOKEN_EXPIRATION }
@@ -87,22 +87,24 @@ class AuthController {
    */
   static async register(req, res) {
     try {
-      const { name, email, password, role = 'user' } = req.body;
+      console.log(req.body);
+      const { username, email, password } = req.body;
 
       // Validate input
-      if (!name || !email || !password) {
+      if (!username || !email || !password) {
         return res.status(400).json({
           status: 'error',
-          message: 'Name, email, and password are required'
+          message: 'Username, email, and password are required'
         });
       }
 
       // Check if user already exists
-      const existingUser = await User.findByEmail(email);
+      const existingUser = await User.findByUsername(username);
+      console.log(existingUser);
       if (existingUser) {
         return res.status(409).json({
           status: 'error',
-          message: 'User with this email already exists'
+          message: 'User with this username already exists'
         });
       }
 
@@ -112,10 +114,9 @@ class AuthController {
 
       // Create user
       const newUser = await User.create({
-        name,
+        username,
         email,
-        password: hashedPassword,
-        role
+        password: hashedPassword
       });
 
       // Remove password from response

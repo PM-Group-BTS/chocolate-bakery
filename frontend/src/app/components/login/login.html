@@ -1,0 +1,17 @@
+<div class="login-container">
+  <h2>Login</h2>
+  <form (ngSubmit)="onSubmit()" #loginForm="ngForm" autocomplete="off">
+    <label for="username">Username</label>
+    <input id="username" name="username" type="text" required [(ngModel)]="username" #usernameInput="ngModel">
+
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" required [(ngModel)]="password" #passwordInput="ngModel">
+    <div style="text-align: right; width: 100%;">
+        <a routerLink="/recoverPwd" routerLinkActive="active">Recuperar contraseña</a>
+    </div>
+
+    <button type="submit" [disabled]="loginInProgress">Login</button>
+  </form>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+</div>
