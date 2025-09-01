@@ -2,14 +2,23 @@
   <h2>Login</h2>
   <form (ngSubmit)="onSubmit()" #loginForm="ngForm" autocomplete="off">
     <label for="username">Username</label>
-    <input id="username" name="username" type="text" required [(ngModel)]="username" #usernameInput="ngModel">
+    <input id="username" name="username" type="text" required [(ngModel)]="username" #usernameInput="ngModel" minlength="4">
+    <div *ngIf="usernameInput.invalid && (usernameInput.dirty || usernameInput.touched)" class="error-message">
+      <div *ngIf="usernameInput.errors?.['required']">Username is required.</div>
+      <div *ngIf="usernameInput.errors?.['minlength']">Username must be at least 4 characters.</div>
+    </div>
 
     <label for="password">Password</label>
-    <input id="password" name="password" type="password" required [(ngModel)]="password" #passwordInput="ngModel">
+    <input id="password" name="password" type="password" required minlength="6" [(ngModel)]="password" #passwordInput="ngModel">
+    
+    <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="error-message">
+      <div *ngIf="passwordInput.errors?.['required']">Password is required.</div>
+      <div *ngIf="passwordInput.errors?.['minlength']">Password must be at least 6 characters.</div>
+    </div>
+
     <div style="text-align: right; width: 100%;">
         <a routerLink="/recoverPwd" routerLinkActive="active">Recuperar contraseña</a>
     </div>
-
     <button type="submit" [disabled]="loginInProgress">Login</button>
   </form>
   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
