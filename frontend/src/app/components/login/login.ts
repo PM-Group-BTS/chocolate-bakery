@@ -1,15 +1,17 @@
 
+
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RecoverPasswordComponent } from './recover-password';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.html',
   styleUrls: ['./login.scss'],
-  imports: [CommonModule,FormsModule]
+  imports: [CommonModule, FormsModule, RecoverPasswordComponent]
 })
 export class LoginComponent {
   username: string = '';
@@ -17,6 +19,7 @@ export class LoginComponent {
   errorMessage: string = '';
   successMessage: string = '';
   loginInProgress: boolean = false;
+  showRecover: boolean = false;
 
   constructor(private apiService: ApiService) {}
 
@@ -40,6 +43,14 @@ export class LoginComponent {
         this.loginInProgress = false;
       }
     });
+  }
+
+  toggleRecover() {
+    this.showRecover = !this.showRecover;
+  }
+
+  onRecoveryRequested(event: {username: string, email: string}) {
+    // Optionally handle recovery event here
   }
 }
 
