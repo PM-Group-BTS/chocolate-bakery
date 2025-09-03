@@ -14,6 +14,7 @@ export class RegisterComponent {
   username: string = '';
   email: string = '';
   password: string = '';
+  confirmPassword: string = '';
   errorMessage: string = '';
   successMessage: string = '';
   registerInProgress: boolean = false;
@@ -32,6 +33,7 @@ export class RegisterComponent {
       next: (res: any) => {
         if (res && res.status === 'success') {
           this.successMessage = 'Registration successful!';
+          this.confirmPassword = '';
         } else {
           this.errorMessage = res?.message || 'Registration failed.';
         }

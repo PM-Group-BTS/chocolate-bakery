@@ -3,26 +3,57 @@
   <form (ngSubmit)="onSubmit()" #registerForm="ngForm" autocomplete="off">
     <label for="username">Username</label>
     <input id="username" name="username" type="text" required minlength="4" [(ngModel)]="username" #usernameInput="ngModel">
-    <div *ngIf="usernameInput.invalid && (usernameInput.dirty || usernameInput.touched)" class="error-message">
-      <div *ngIf="usernameInput.errors?.['required']">Username is required.</div>
-      <div *ngIf="usernameInput.errors?.['minlength']">Username must be at least 4 characters.</div>
-    </div>
+    @if(usernameInput.invalid && (usernameInput.dirty || usernameInput.touched)){
+        <div class="error-message"> 
+        @if(usernameInput.errors?.['required']) {
+          <div>Username is required.</div>
+        }
+        @if(usernameInput.errors?.['minlength'] || usernameInput.errors?.['maxlength']) {
+          <div>Username must be between 4 and 12 characters.</div>
+        }
+        </div>
+    }
 
     <label for="email">Email</label>
     <input id="email" name="email" type="email" required [(ngModel)]="email" #emailInput="ngModel">
-    <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="error-message">
-      <div *ngIf="emailInput.errors?.['required']">Email is required.</div>
-      <div *ngIf="emailInput.errors?.['email']">Invalid email address.</div>
-    </div>
+    @if(emailInput.invalid && (emailInput.dirty || emailInput.touched)){
+        <div class="error-message"> 
+        @if(emailInput.errors?.['required']) {
+          <div>Email is required.</div>
+        }
+        @if(emailInput.errors?.['email']) {
+          <div>Invalid email address.</div>
+        }
+        </div>
+    }
 
     <label for="password">Password</label>
     <input id="password" name="password" type="password" required minlength="6" [(ngModel)]="password" #passwordInput="ngModel">
-    <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="error-message">
-      <div *ngIf="passwordInput.errors?.['required']">Password is required.</div>
-      <div *ngIf="passwordInput.errors?.['minlength']">Password must be at least 6 characters.</div>
-    </div>
+    @if(passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)){
+        <div class="error-message"> 
+        @if(passwordInput.errors?.['required']) {
+          <div>Password is required.</div>
+        }
+        @if(passwordInput.errors?.['minlength'] || passwordInput.errors?.['maxlength']) {
+          <div>Password must be between 6 and 20 characters.</div>
+        }
+        </div>
+    }
 
-    <button type="submit" [disabled]="registerInProgress">Register</button>
+    <label for="confirmPassword">Confirm Password</label>
+    <input id="confirmPassword" name="confirmPassword" type="password" required [(ngModel)]="confirmPassword" #confirmPasswordInput="ngModel">
+    @if((confirmPasswordInput.dirty || confirmPasswordInput.touched)){
+      <div class="error-message">
+        @if(confirmPasswordInput.value !== password) {
+          <div>Passwords do not match.</div>
+        }
+        @if(confirmPasswordInput.errors?.['required']) {
+          <div>Confirm password is required.</div>
+        }
+      </div>
+    }
+
+    <button type="submit" [disabled]="registerInProgress || confirmPassword !== password">Register</button>
   </form>
   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
   <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
