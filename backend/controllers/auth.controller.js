@@ -87,8 +87,8 @@ class AuthController {
    */
   static async register(req, res) {
     try {
-      console.log(req.body);
       const { username, email, password } = req.body;
+      const roles = process.env.DEFAULT_USERSCOPES || 'none';
 
       // Validate input
       if (!username || !email || !password) {
@@ -100,7 +100,6 @@ class AuthController {
 
       // Check if user already exists
       const existingUser = await User.findByUsername(username);
-      console.log(existingUser);
       if (existingUser) {
         return res.status(409).json({
           status: 'error',
@@ -120,7 +119,11 @@ class AuthController {
       });
 
       // Remove password from response
+      
+      
       const { password: _, ...userWithoutPassword } = newUser;
+      const userRoles = await User.saveRoles(userWithoutPassword.id, roles);
+      userWithoutPassword.roles = userRoles;
 
       return res.status(201).json({
         status: 'success',

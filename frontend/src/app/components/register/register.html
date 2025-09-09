@@ -15,7 +15,7 @@
     }
 
     <label for="email">Email</label>
-    <input id="email" name="email" type="email" required [(ngModel)]="email" #emailInput="ngModel">
+    <input id="email" name="email" type="email" required [(ngModel)]="email" #emailInput="ngModel" >
     @if(emailInput.invalid && (emailInput.dirty || emailInput.touched)){
         <div class="error-message"> 
         @if(emailInput.errors?.['required']) {
