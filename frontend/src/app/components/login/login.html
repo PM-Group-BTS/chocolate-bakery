@@ -1,0 +1,48 @@
+
+<div class="login-container">
+  <ng-container *ngIf="!showRecover; else recoverBlock">
+    <h2>Login</h2>
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm" autocomplete="off">
+      <label for="username">Username</label>
+      <input id="username" name="username" type="text" required minlength="4" maxlength="12" [(ngModel)]="username" #usernameInput="ngModel">
+      @if(usernameInput.invalid && (usernameInput.dirty || usernameInput.touched)){
+        <div class="error-message"> 
+        @if(usernameInput.errors?.['required']) {
+          <div>Username is required.</div>
+        }
+        @if(usernameInput.errors?.['minlength'] || usernameInput.errors?.['maxlength']) {
+          <div>Username must be between 4 and 12 characters.</div>
+        }
+        </div>
+      }
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required minlength="6" maxlength="20" [(ngModel)]="password" #passwordInput="ngModel">
+      @if(passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)){
+        <div class="error-message"> 
+        @if(passwordInput.errors?.['required']) {
+          <div>Password is required.</div>
+        }
+        @if(passwordInput.errors?.['minlength'] || passwordInput.errors?.['maxlength']) {
+          <div>Password must be between 6 and 20 characters.</div>
+        }
+        </div>
+      }
+      <div style="text-align: right; width: 100%;">
+        <a href="#" (click)="toggleRecover(); $event.preventDefault()">Forgot password?</a>
+      </div>
+      <button type="submit" [disabled]="loginInProgress">Login</button>
+    </form>
+    @if(errorMessage) {
+      <div class="error-message">{{ errorMessage }}</div>
+    }
+    @if(successMessage) {
+      <div class="success-message">{{ successMessage }}</div>
+    }
+  </ng-container>
+  <ng-template #recoverBlock>
+    <app-recover-password (recoveryRequested)="onRecoveryRequested($event)"></app-recover-password>
+    <div style="text-align: right; width: 100%; margin-top: 1rem;">
+      <a href="#" (click)="toggleRecover(); $event.preventDefault()">Back to login</a>
+    </div>
+  </ng-template>
+</div>
