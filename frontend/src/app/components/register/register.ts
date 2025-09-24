@@ -55,7 +55,6 @@ export class RegisterComponent {
       });
     }    
   }
-
   cleanForm() {
     this.username = '';
     this.email = '';

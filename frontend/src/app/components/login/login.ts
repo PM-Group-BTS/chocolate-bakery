@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RecoverPasswordComponent } from './recover-password';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,7 @@ export class LoginComponent {
   loginInProgress: boolean = false;
   showRecover: boolean = false;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private router: Router) {}
 
   onSubmit() {
     this.errorMessage = '';
@@ -43,6 +44,10 @@ export class LoginComponent {
         this.loginInProgress = false;
       }
     });
+  }
+
+  goToRegister() {
+    this.router.navigate(['register']);
   }
 
   toggleRecover() {
