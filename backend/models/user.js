@@ -66,21 +66,24 @@ class User {
    * @param {Array<string>} roles - Array of role names or IDs
    * @returns {Promise<void>}
    */
-  static async saveRoles(userId, roles) {
-    if (roles.length === 0) return;
-    try {
-      console.log("values saveRoles")
-      // Remove existing roles for the user (optional, comment out if not needed)
-      await db.query('DELETE FROM user_roles WHERE user_id = ?', [userId]);
-      // Insert new roles
-      await db.query(
-        `INSERT INTO user_roles (user_id, roles) VALUES (${userId},'${roles}')`
-      );
-    } catch (error) {
-      throw error;
-    }
+static async saveRoles(userId, roles) {
+  if (roles.length === 0) return;
+  if (typeof roles === 'string') roles = roles.split(',');
+  const values = roles.map(role => [userId, role]);
+  console.log(values);
+  try {
+    // Remove existing roles for the user (optional)
+    await db.query('DELETE FROM user_roles WHERE user_id = ?', [userId]);
+    // Insert new roles (bulk insert)
+    await db.query(
+      `INSERT INTO user_roles (user_id, role_id) VALUES (${values})`,
+    );
+  } catch (error) {
+    throw error;
   }
-
+}
+//.map(() => '(?, ?)').join(', ')
+//INSERT INTO user_roles (user_id, role) VALUES 43,3
   /**
    * Get roles for a user
    * @param {number} userId - User ID
