@@ -13,6 +13,61 @@ const TOKEN_EXPIRATION = '24h';
  */
 class AuthController {
   /**
+   * get a single user 
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object
+   * @returns {Object} - Response with token or error
+   */
+  static async getUserById(req, res) {
+    try {
+      const { username, password } = req.body;
+
+      // Validate input
+      if (!username || !password) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Username and password are required'
+        });
+      }
+
+      // Find user by username
+      const user = await User.findByUsername(username);
+      if (!user) {
+        return res.status(401).json({
+          status: 'error',
+          message: 'Invalid credentials'
+        });
+      }
+
+      // Compare passwords
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      //console.log(isPasswordValid);
+      if (!isPasswordValid) {
+        return res.status(401).json({
+          status: 'error',
+          message: 'Invalid credentials'
+        });
+      }
+      // Return token and user info (excluding password)
+      const { password: _, ...userWithoutPassword } = user;
+      
+      return res.status(200).json({
+        status: 'success',
+        message: 'user found',
+        data: {
+          user: userWithoutPassword
+        }
+      });
+    } catch (error) {
+      logger.error('Login error:', error);
+      return res.status(500).json({
+        status: 'error',
+        message: 'Internal server error'
+      });
+    }
+  }
+
+  /**
    * Login user and generate JWT token
    * @param {Object} req - Express request object
    * @param {Object} res - Express response object
