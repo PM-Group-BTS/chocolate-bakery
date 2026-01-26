@@ -114,6 +114,8 @@ class AuthController {
         { expiresIn: TOKEN_EXPIRATION }
       );
 
+      console.log("token ",token)
+
       // Return token and user info (excluding password)
       const { password: _, ...userWithoutPassword } = user;
       

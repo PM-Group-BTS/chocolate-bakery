@@ -16,6 +16,7 @@ export const authInterceptor: HttpInterceptorFn = (
   
   // Get current authentication state
   const isAuthenticated = authService.isAuthenticated();
+  console.log("isAuthenticated ",isAuthenticated);
   const token = authService.token();
 
   // Skip authentication for certain endpoints
