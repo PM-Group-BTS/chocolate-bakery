@@ -33,7 +33,8 @@ export class LoginComponent {
         if (res && res.status === 'success') {
           this.successMessage = 'Login successful!';
           // Optionally, store token and redirect
-          localStorage.setItem('token', res.data.token);
+          localStorage.setItem('auth_token', res.data.token);
+          this.router.navigate(['welcome']);
         } else {
           this.errorMessage = res?.message || 'Login failed.';
         }
